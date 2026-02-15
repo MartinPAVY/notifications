@@ -177,6 +177,8 @@ class _NotifyMeHomeState extends State<NotifyMeHome> {
 
   Future<void> _sendNotification({NotificationType? typeOverride}) async {
     final type = typeOverride ?? _selectedType;
+    final id = DateTime.now().millisecond % 100000;
+    const timeout = 300000; // 5 minutes en millisecondes
 
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
@@ -185,6 +187,7 @@ class _NotifyMeHomeState extends State<NotifyMeHome> {
           channelDescription: 'Channel for Notify Me app triggers',
           importance: Importance.max,
           priority: Priority.high,
+          timeoutAfter: timeout, // Suppression automatique native sur Android
         );
 
     const DarwinNotificationDetails darwinNotificationDetails =
@@ -201,11 +204,17 @@ class _NotifyMeHomeState extends State<NotifyMeHome> {
 
     try {
       await flutterLocalNotificationsPlugin.show(
-        id: DateTime.now().millisecond % 100000,
+        id: id,
         title: type.title,
         body: '${type.subtitle}\n${type.body}',
         notificationDetails: notificationDetails,
       );
+
+      // Suppression manuelle après le délai (pour iOS et secours Android)
+      // Note: Cela fonctionne tant que l'application reste en mémoire
+      Future.delayed(const Duration(milliseconds: timeout), () {
+        flutterLocalNotificationsPlugin.cancel(id: id);
+      });
     } catch (e) {
       debugPrint("Error sending notification: $e");
     }
