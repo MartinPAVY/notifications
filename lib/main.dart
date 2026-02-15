@@ -29,9 +29,9 @@ void main() async {
 
   const DarwinInitializationSettings initializationSettingsDarwin =
       DarwinInitializationSettings(
-        requestAlertPermission: false,
-        requestBadgePermission: false,
-        requestSoundPermission: false,
+        requestAlertPermission: true,
+        requestBadgePermission: true,
+        requestSoundPermission: true,
       );
 
   const InitializationSettings initializationSettings = InitializationSettings(
@@ -96,29 +96,10 @@ class _NotifyMeHomeState extends State<NotifyMeHome> {
     bool granted = false;
 
     try {
-      debugPrint("Starting permission request...");
-      if (Theme.of(context).platform == TargetPlatform.iOS) {
-        // Specifically for iOS, use the plugin's implementation to ensure native delegate is happy
-        final iosPlugin = flutterLocalNotificationsPlugin
-            .resolvePlatformSpecificImplementation<
-              DarwinFlutterLocalNotificationsPlugin
-            >();
-        if (iosPlugin != null) {
-          debugPrint("Requesting iOS permissions via plugin native method...");
-          final result = await iosPlugin.requestPermissions(
-            alert: true,
-            badge: true,
-            sound: true,
-          );
-          granted = result ?? false;
-          debugPrint("iOS native request result: $granted");
-        }
-      } else {
-        debugPrint("Requesting Android permissions via permission_handler...");
-        var status = await Permission.notification.request();
-        granted = status.isGranted;
-        debugPrint("Android request result: $granted");
-      }
+      debugPrint("Requesting permissions via permission_handler...");
+      var status = await Permission.notification.request();
+      granted = status.isGranted || status.isProvisional;
+      debugPrint("Permission status: $status (Granted: $granted)");
     } catch (e) {
       debugPrint("Error requesting permissions: $e");
     }

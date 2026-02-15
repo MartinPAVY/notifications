@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_local_notifications: ^20.0.0
   permission_handler: ^12.0.1
+  flutter_launcher_icons: ^0.14.4
+  flutter_svg: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -53,11 +55,13 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  uses-material-design: true
+  assets:
+    - assets/bell-ringing.svg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-  uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -89,3 +93,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/bell-ringing.svg"
+  adaptive_icon_background: "#1C1C1E"
+  adaptive_icon_foreground: "assets/bell-ringing.svg"
