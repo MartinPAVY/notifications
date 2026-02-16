@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:notify_me/models/notifications/notification.dart';
+import 'package:notify_me/models/notifications/notifications.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -44,52 +46,47 @@ void main() async {
   runApp(const ProviderScope(child: NotifyMeApp()));
 }
 
-class NotificationType {
-  final String id;
-  final String title;
-  final String subtitle;
-  final String body;
+const NotificationsModel notificationTypes = NotificationsModel(
+  notifications: [
+    NotificationModel(
+      id: 'vrai',
+      title: 'Notify Vrai',
+      subtitle: 'Notification booléan',
+      body: 'True',
+    ),
 
-  const NotificationType({
-    required this.id,
-    required this.title,
-    required this.subtitle,
-    required this.body,
-  });
-}
-
-const List<NotificationType> notificationTypes = [
-  NotificationType(
-    id: 'vrai',
-    title: 'Notify Vrai',
-    subtitle: 'Notification booléan',
-    body: 'True',
-  ),
-  NotificationType(
-    id: 'faux',
-    title: 'Notify Faux',
-    subtitle: 'Notification booléan',
-    body: 'False',
-  ),
-  NotificationType(
-    id: 'active',
-    title: 'Notify Activé',
-    subtitle: 'Notification d\'état',
-    body: 'On',
-  ),
-  NotificationType(
-    id: 'desactive',
-    title: 'Notify Désactivé',
-    subtitle: 'Notification d\'état',
-    body: 'Off',
-  ),
-  NotificationType(
-    id: 'defaut',
-    title: 'Notify Défaut',
-    subtitle: 'Notification d\'état',
-    body: 'Non défini(e)',
-  ),
-];
+    NotificationModel(
+      id: 'vrai',
+      title: 'Notify Vrai',
+      subtitle: 'Notification booléan',
+      body: 'True',
+    ),
+    NotificationModel(
+      id: 'faux',
+      title: 'Notify Faux',
+      subtitle: 'Notification booléan',
+      body: 'False',
+    ),
+    NotificationModel(
+      id: 'active',
+      title: 'Notify Activé',
+      subtitle: 'Notification d\'état',
+      body: 'On',
+    ),
+    NotificationModel(
+      id: 'desactive',
+      title: 'Notify Désactivé',
+      subtitle: 'Notification d\'état',
+      body: 'Off',
+    ),
+    NotificationModel(
+      id: 'defaut',
+      title: 'Notify Défaut',
+      subtitle: 'Notification d\'état',
+      body: 'Non défini(e)',
+    ),
+  ],
+);
 
 class NotifyMeApp extends ConsumerWidget {
   const NotifyMeApp({super.key});
@@ -132,7 +129,7 @@ class NotifyMeHome extends StatefulWidget {
 class _NotifyMeHomeState extends State<NotifyMeHome> {
   bool _isInitialized = false;
   String _statusMessage = "En attente...";
-  NotificationType _selectedType = notificationTypes[0];
+  NotificationModel _selectedType = notificationTypes.notifications[0];
   final QuickActions _quickActions = const QuickActions();
 
   @override
@@ -153,7 +150,9 @@ class _NotifyMeHomeState extends State<NotifyMeHome> {
 
     _quickActions.initialize((String type) {
       try {
-        final nType = notificationTypes.firstWhere((e) => e.id == type);
+        final nType = notificationTypes.notifications.firstWhere(
+          (e) => e.id == type,
+        );
         _sendNotification(typeOverride: nType);
       } catch (e) {
         debugPrint("Error handling shortcut: $e");
@@ -179,7 +178,7 @@ class _NotifyMeHomeState extends State<NotifyMeHome> {
     }
   }
 
-  Future<void> _sendNotification({NotificationType? typeOverride}) async {
+  Future<void> _sendNotification({NotificationModel? typeOverride}) async {
     final type = typeOverride ?? _selectedType;
     final id = DateTime.now().millisecond % 100000;
     const timeout = 300000;
@@ -278,11 +277,11 @@ class _NotifyMeHomeState extends State<NotifyMeHome> {
                 const SizedBox(height: 24),
                 Expanded(
                   child: ListView.separated(
-                    itemCount: notificationTypes.length,
+                    itemCount: notificationTypes.notifications.length,
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 12),
                     itemBuilder: (context, index) {
-                      final type = notificationTypes[index];
+                      final type = notificationTypes.notifications[index];
                       final isSelected = _selectedType.id == type.id;
 
                       return GestureDetector(

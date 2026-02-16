@@ -13,22 +13,22 @@ part of 'notification.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$Notification {
+mixin _$NotificationModel {
 
  String get id; String get title; String get subtitle; String get body;
-/// Create a copy of Notification
+/// Create a copy of NotificationModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$NotificationCopyWith<Notification> get copyWith => _$NotificationCopyWithImpl<Notification>(this as Notification, _$identity);
+$NotificationModelCopyWith<NotificationModel> get copyWith => _$NotificationModelCopyWithImpl<NotificationModel>(this as NotificationModel, _$identity);
 
-  /// Serializes this Notification to a JSON map.
+  /// Serializes this NotificationModel to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Notification&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.body, body) || other.body == body));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.body, body) || other.body == body));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -37,15 +37,15 @@ int get hashCode => Object.hash(runtimeType,id,title,subtitle,body);
 
 @override
 String toString() {
-  return 'Notification(id: $id, title: $title, subtitle: $subtitle, body: $body)';
+  return 'NotificationModel(id: $id, title: $title, subtitle: $subtitle, body: $body)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $NotificationCopyWith<$Res>  {
-  factory $NotificationCopyWith(Notification value, $Res Function(Notification) _then) = _$NotificationCopyWithImpl;
+abstract mixin class $NotificationModelCopyWith<$Res>  {
+  factory $NotificationModelCopyWith(NotificationModel value, $Res Function(NotificationModel) _then) = _$NotificationModelCopyWithImpl;
 @useResult
 $Res call({
  String id, String title, String subtitle, String body
@@ -56,14 +56,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$NotificationCopyWithImpl<$Res>
-    implements $NotificationCopyWith<$Res> {
-  _$NotificationCopyWithImpl(this._self, this._then);
+class _$NotificationModelCopyWithImpl<$Res>
+    implements $NotificationModelCopyWith<$Res> {
+  _$NotificationModelCopyWithImpl(this._self, this._then);
 
-  final Notification _self;
-  final $Res Function(Notification) _then;
+  final NotificationModel _self;
+  final $Res Function(NotificationModel) _then;
 
-/// Create a copy of Notification
+/// Create a copy of NotificationModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? subtitle = null,Object? body = null,}) {
   return _then(_self.copyWith(
@@ -78,8 +78,8 @@ as String,
 }
 
 
-/// Adds pattern-matching-related methods to [Notification].
-extension NotificationPatterns on Notification {
+/// Adds pattern-matching-related methods to [NotificationModel].
+extension NotificationModelPatterns on NotificationModel {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -92,10 +92,10 @@ extension NotificationPatterns on Notification {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Notification value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _NotificationModel value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Notification() when $default != null:
+case _NotificationModel() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -114,10 +114,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Notification value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _NotificationModel value)  $default,){
 final _that = this;
 switch (_that) {
-case _Notification():
+case _NotificationModel():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -135,10 +135,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Notification value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _NotificationModel value)?  $default,){
 final _that = this;
 switch (_that) {
-case _Notification() when $default != null:
+case _NotificationModel() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -158,7 +158,7 @@ return $default(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String subtitle,  String body)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Notification() when $default != null:
+case _NotificationModel() when $default != null:
 return $default(_that.id,_that.title,_that.subtitle,_that.body);case _:
   return orElse();
 
@@ -179,7 +179,7 @@ return $default(_that.id,_that.title,_that.subtitle,_that.body);case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String subtitle,  String body)  $default,) {final _that = this;
 switch (_that) {
-case _Notification():
+case _NotificationModel():
 return $default(_that.id,_that.title,_that.subtitle,_that.body);case _:
   throw StateError('Unexpected subclass');
 
@@ -199,7 +199,7 @@ return $default(_that.id,_that.title,_that.subtitle,_that.body);case _:
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String subtitle,  String body)?  $default,) {final _that = this;
 switch (_that) {
-case _Notification() when $default != null:
+case _NotificationModel() when $default != null:
 return $default(_that.id,_that.title,_that.subtitle,_that.body);case _:
   return null;
 
@@ -211,29 +211,29 @@ return $default(_that.id,_that.title,_that.subtitle,_that.body);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _Notification extends Notification {
-  const _Notification({required this.id, required this.title, required this.subtitle, required this.body}): super._();
-  factory _Notification.fromJson(Map<String, dynamic> json) => _$NotificationFromJson(json);
+class _NotificationModel implements NotificationModel {
+  const _NotificationModel({required this.id, required this.title, required this.subtitle, required this.body});
+  factory _NotificationModel.fromJson(Map<String, dynamic> json) => _$NotificationModelFromJson(json);
 
 @override final  String id;
 @override final  String title;
 @override final  String subtitle;
 @override final  String body;
 
-/// Create a copy of Notification
+/// Create a copy of NotificationModel
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$NotificationCopyWith<_Notification> get copyWith => __$NotificationCopyWithImpl<_Notification>(this, _$identity);
+_$NotificationModelCopyWith<_NotificationModel> get copyWith => __$NotificationModelCopyWithImpl<_NotificationModel>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$NotificationToJson(this, );
+  return _$NotificationModelToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Notification&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.body, body) || other.body == body));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.body, body) || other.body == body));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -242,15 +242,15 @@ int get hashCode => Object.hash(runtimeType,id,title,subtitle,body);
 
 @override
 String toString() {
-  return 'Notification(id: $id, title: $title, subtitle: $subtitle, body: $body)';
+  return 'NotificationModel(id: $id, title: $title, subtitle: $subtitle, body: $body)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$NotificationCopyWith<$Res> implements $NotificationCopyWith<$Res> {
-  factory _$NotificationCopyWith(_Notification value, $Res Function(_Notification) _then) = __$NotificationCopyWithImpl;
+abstract mixin class _$NotificationModelCopyWith<$Res> implements $NotificationModelCopyWith<$Res> {
+  factory _$NotificationModelCopyWith(_NotificationModel value, $Res Function(_NotificationModel) _then) = __$NotificationModelCopyWithImpl;
 @override @useResult
 $Res call({
  String id, String title, String subtitle, String body
@@ -261,17 +261,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$NotificationCopyWithImpl<$Res>
-    implements _$NotificationCopyWith<$Res> {
-  __$NotificationCopyWithImpl(this._self, this._then);
+class __$NotificationModelCopyWithImpl<$Res>
+    implements _$NotificationModelCopyWith<$Res> {
+  __$NotificationModelCopyWithImpl(this._self, this._then);
 
-  final _Notification _self;
-  final $Res Function(_Notification) _then;
+  final _NotificationModel _self;
+  final $Res Function(_NotificationModel) _then;
 
-/// Create a copy of Notification
+/// Create a copy of NotificationModel
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? subtitle = null,Object? body = null,}) {
-  return _then(_Notification(
+  return _then(_NotificationModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,subtitle: null == subtitle ? _self.subtitle : subtitle // ignore: cast_nullable_to_non_nullable
