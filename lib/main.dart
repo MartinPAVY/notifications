@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quick_actions/quick_actions.dart';
+import 'src/router/app_router.dart';
 
 // Configuration from environment variables
 const String appTitleConst = String.fromEnvironment(
@@ -16,7 +19,6 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize notifications
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -39,7 +41,7 @@ void main() async {
     },
   );
 
-  runApp(const NotifyMeApp());
+  runApp(const ProviderScope(child: NotifyMeApp()));
 }
 
 class NotificationType {
@@ -89,12 +91,14 @@ const List<NotificationType> notificationTypes = [
   ),
 ];
 
-class NotifyMeApp extends StatelessWidget {
+class NotifyMeApp extends ConsumerWidget {
   const NotifyMeApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: appTitleConst,
       theme: ThemeData(
@@ -113,7 +117,7 @@ class NotifyMeApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const NotifyMeHome(),
+      routerConfig: router,
     );
   }
 }
@@ -178,7 +182,7 @@ class _NotifyMeHomeState extends State<NotifyMeHome> {
   Future<void> _sendNotification({NotificationType? typeOverride}) async {
     final type = typeOverride ?? _selectedType;
     final id = DateTime.now().millisecond % 100000;
-    const timeout = 300000; // 5 minutes en millisecondes
+    const timeout = 300000;
 
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
@@ -239,7 +243,22 @@ class _NotifyMeHomeState extends State<NotifyMeHome> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.settings,
+                        size: 24,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        context.go('/');
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 5),
                 Center(
                   child: SvgPicture.asset(
                     'assets/bell-ringing.svg',
