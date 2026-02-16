@@ -8,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'src/router/app_router.dart';
+import 'package:notify_me/src/providers/settings_provider.dart';
 
 // Configuration from environment variables
 const String appTitleConst = String.fromEnvironment(
@@ -48,13 +49,6 @@ void main() async {
 
 const NotificationsModel notificationTypes = NotificationsModel(
   notifications: [
-    NotificationModel(
-      id: 'vrai',
-      title: 'Notify Vrai',
-      subtitle: 'Notification booléan',
-      body: 'True',
-    ),
-
     NotificationModel(
       id: 'vrai',
       title: 'Notify Vrai',
@@ -119,14 +113,14 @@ class NotifyMeApp extends ConsumerWidget {
   }
 }
 
-class NotifyMeHome extends StatefulWidget {
+class NotifyMeHome extends ConsumerStatefulWidget {
   const NotifyMeHome({super.key});
 
   @override
-  State<NotifyMeHome> createState() => _NotifyMeHomeState();
+  ConsumerState<NotifyMeHome> createState() => _NotifyMeHomeState();
 }
 
-class _NotifyMeHomeState extends State<NotifyMeHome> {
+class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
   bool _isInitialized = false;
   String _statusMessage = "En attente...";
   NotificationModel _selectedType = notificationTypes.notifications[0];
@@ -181,9 +175,13 @@ class _NotifyMeHomeState extends State<NotifyMeHome> {
   Future<void> _sendNotification({NotificationModel? typeOverride}) async {
     final type = typeOverride ?? _selectedType;
     final id = DateTime.now().millisecond % 100000;
-    const timeout = 300000;
 
-    const AndroidNotificationDetails androidNotificationDetails =
+    final settings = ref.read(settingsProvider);
+    final timeout = settings.autoDismissEnabled
+        ? settings.dismissDurationMinutes * 60000
+        : null;
+
+    final AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
           'notify_me_channel',
           'Notify Me Notifications',
@@ -200,7 +198,7 @@ class _NotifyMeHomeState extends State<NotifyMeHome> {
           presentSound: true,
         );
 
-    const NotificationDetails notificationDetails = NotificationDetails(
+    final NotificationDetails notificationDetails = NotificationDetails(
       android: androidNotificationDetails,
       iOS: darwinNotificationDetails,
     );
@@ -214,10 +212,11 @@ class _NotifyMeHomeState extends State<NotifyMeHome> {
       );
 
       // Suppression manuelle après le délai (pour iOS et secours Android)
-      // Note: Cela fonctionne tant que l'application reste en mémoire
-      Future.delayed(const Duration(milliseconds: timeout), () {
-        flutterLocalNotificationsPlugin.cancel(id: id);
-      });
+      if (timeout != null) {
+        Future.delayed(Duration(milliseconds: timeout), () {
+          flutterLocalNotificationsPlugin.cancel(id: id);
+        });
+      }
     } catch (e) {
       debugPrint("Error sending notification: $e");
     }
@@ -252,7 +251,7 @@ class _NotifyMeHomeState extends State<NotifyMeHome> {
                         color: Colors.white,
                       ),
                       onPressed: () {
-                        context.go('/');
+                        context.pushNamed('settings');
                       },
                     ),
                   ],

@@ -10,6 +10,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/', builder: (context, state) => const NotifyMeHome()),
       GoRoute(
         path: '/settings',
+        name: 'settings',
         builder: (context, state) => const NotifyMeSettings(),
       ),
     ],
