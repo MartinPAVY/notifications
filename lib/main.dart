@@ -146,6 +146,7 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
         final nType = notificationTypes.notifications.firstWhere(
           (e) => e.id == type,
         );
+        ref.read(settingsProvider.notifier).setSelectedNotificationId(nType.id);
         _sendNotification(typeOverride: nType);
       } catch (e) {
         debugPrint("Error handling shortcut: $e");
