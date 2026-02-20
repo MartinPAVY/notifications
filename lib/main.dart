@@ -13,7 +13,7 @@ import 'package:notify_me/src/providers/settings_provider.dart';
 // Configuration from environment variables
 const String appTitleConst = String.fromEnvironment(
   'APP_TITLE',
-  defaultValue: 'Notify Personnelles',
+  defaultValue: 'Notifs Personnelles',
 );
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -50,6 +50,12 @@ void main() async {
 const NotificationsModel notificationTypes = NotificationsModel(
   notifications: [
     NotificationModel(
+      id: 'defaut',
+      title: 'Notify Défaut',
+      subtitle: 'Notification d\'état',
+      body: 'Non défini(e)',
+    ),
+    NotificationModel(
       id: 'vrai',
       title: 'Notify Vrai',
       subtitle: 'Notification booléan',
@@ -72,12 +78,6 @@ const NotificationsModel notificationTypes = NotificationsModel(
       title: 'Notify Désactivé',
       subtitle: 'Notification d\'état',
       body: 'Off',
-    ),
-    NotificationModel(
-      id: 'defaut',
-      title: 'Notify Défaut',
-      subtitle: 'Notification d\'état',
-      body: 'Non défini(e)',
     ),
   ],
 );
@@ -123,7 +123,6 @@ class NotifyMeHome extends ConsumerStatefulWidget {
 class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
   bool _isInitialized = false;
   String _statusMessage = "En attente...";
-  NotificationModel _selectedType = notificationTypes.notifications[0];
   final QuickActions _quickActions = const QuickActions();
 
   @override
@@ -173,7 +172,13 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
   }
 
   Future<void> _sendNotification({NotificationModel? typeOverride}) async {
-    final type = typeOverride ?? _selectedType;
+    final selectedId = ref.read(settingsProvider).selectedNotificationId;
+    final type =
+        typeOverride ??
+        notificationTypes.notifications.firstWhere(
+          (e) => e.id == selectedId,
+          orElse: () => notificationTypes.notifications[0],
+        );
     final id = DateTime.now().millisecond % 100000;
 
     final settings = ref.read(settingsProvider);
@@ -183,9 +188,9 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
 
     final AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
-          'notify_me_channel',
-          'Notify Me Notifications',
-          channelDescription: 'Channel for Notify Me app triggers',
+          'notifs_perso_channel',
+          'Notifs Perso',
+          channelDescription: 'Channel for Notifs Perso app triggers',
           importance: Importance.max,
           priority: Priority.high,
           timeoutAfter: timeout, // Suppression automatique native sur Android
@@ -269,7 +274,7 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
                 ),
                 const SizedBox(height: 32),
                 Text(
-                  "Notify Personnelles",
+                  "Notifs Personnelles",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
@@ -281,13 +286,16 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
                         const SizedBox(height: 12),
                     itemBuilder: (context, index) {
                       final type = notificationTypes.notifications[index];
-                      final isSelected = _selectedType.id == type.id;
+                      final selectedId = ref
+                          .watch(settingsProvider)
+                          .selectedNotificationId;
+                      final isSelected = selectedId == type.id;
 
                       return GestureDetector(
                         onTap: () {
-                          setState(() {
-                            _selectedType = type;
-                          });
+                          ref
+                              .read(settingsProvider.notifier)
+                              .setSelectedNotificationId(type.id);
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
