@@ -52,8 +52,8 @@ const NotificationsModel notificationTypes = NotificationsModel(
     NotificationModel(
       id: 'defaut',
       title: 'Notify Défaut',
-      subtitle: 'Notification d\'état',
-      body: 'Non défini(e)',
+      subtitle: 'Notification Texte',
+      body: 'Non défini',
     ),
     NotificationModel(
       id: 'vrai',
@@ -81,6 +81,20 @@ const NotificationsModel notificationTypes = NotificationsModel(
     ),
   ],
 );
+
+List<NotificationModel> getDynamicNotifications(SettingsState settings) {
+  return notificationTypes.notifications.map((n) {
+    if (n.id == 'defaut') {
+      return NotificationModel(
+        id: n.id,
+        title: settings.defaultTitle,
+        subtitle: settings.defaultSubtitle,
+        body: settings.defaultBody,
+      );
+    }
+    return n;
+  }).toList();
+}
 
 class NotifyMeApp extends ConsumerWidget {
   const NotifyMeApp({super.key});
@@ -122,6 +136,7 @@ class NotifyMeHome extends ConsumerStatefulWidget {
 
 class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
   bool _isInitialized = false;
+  bool _quickActionsInitialized = false;
   String _statusMessage = "En attente...";
   final QuickActions _quickActions = const QuickActions();
 
@@ -141,11 +156,19 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
       const ShortcutItem(type: 'defaut', localizedTitle: 'Notify Défaut'),
     ]);
 
+    // Guard: n'enregistrer le handler qu'une seule fois pour éviter
+    // que plusieurs listeners s'accumulent si le widget est reconstruit
+    // (retour d'arrière-plan, navigation, etc.), ce qui causerait
+    // un envoi de notification en double.
+    if (_quickActionsInitialized) return;
+    _quickActionsInitialized = true;
+
     _quickActions.initialize((String type) {
       try {
-        final nType = notificationTypes.notifications.firstWhere(
-          (e) => e.id == type,
-        );
+        final settings = ref.read(settingsProvider);
+        final nType = getDynamicNotifications(
+          settings,
+        ).firstWhere((e) => e.id == type);
         ref.read(settingsProvider.notifier).setSelectedNotificationId(nType.id);
         _sendNotification(typeOverride: nType);
       } catch (e) {
@@ -173,16 +196,16 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
   }
 
   Future<void> _sendNotification({NotificationModel? typeOverride}) async {
-    final selectedId = ref.read(settingsProvider).selectedNotificationId;
+    final settings = ref.read(settingsProvider);
+    final selectedId = settings.selectedNotificationId;
+    final dynNotifs = getDynamicNotifications(settings);
     final type =
         typeOverride ??
-        notificationTypes.notifications.firstWhere(
+        dynNotifs.firstWhere(
           (e) => e.id == selectedId,
-          orElse: () => notificationTypes.notifications[0],
+          orElse: () => dynNotifs[0],
         );
     final id = DateTime.now().millisecond % 100000;
-
-    final settings = ref.read(settingsProvider);
     final timeout = settings.autoDismissEnabled
         ? settings.dismissDurationMinutes * 60000
         : null;
@@ -286,10 +309,9 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 12),
                     itemBuilder: (context, index) {
-                      final type = notificationTypes.notifications[index];
-                      final selectedId = ref
-                          .watch(settingsProvider)
-                          .selectedNotificationId;
+                      final settings = ref.watch(settingsProvider);
+                      final type = getDynamicNotifications(settings)[index];
+                      final selectedId = settings.selectedNotificationId;
                       final isSelected = selectedId == type.id;
 
                       return GestureDetector(
