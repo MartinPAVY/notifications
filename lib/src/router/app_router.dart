@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:notify_me/main.dart';
+import 'package:notify_me/src/ui/pages/home.page.dart';
 import 'package:notify_me/src/ui/pages/settings.page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
