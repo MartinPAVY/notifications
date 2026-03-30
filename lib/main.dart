@@ -7,13 +7,19 @@ import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quick_actions/quick_actions.dart';
+import 'package:flutter/services.dart';
 import 'src/router/app_router.dart';
 import 'package:notify_me/src/providers/settings_provider.dart';
 
 // Configuration from environment variables
 const String appTitleConst = String.fromEnvironment(
   'APP_TITLE',
-  defaultValue: 'Notifs Personnelles',
+  defaultValue: 'Notify Personnelles',
+);
+
+const int appVariantConst = int.fromEnvironment(
+  'APP_VARIANT',
+  defaultValue: 1,
 );
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -47,14 +53,8 @@ void main() async {
   runApp(const ProviderScope(child: NotifyMeApp()));
 }
 
-const NotificationsModel notificationTypes = NotificationsModel(
+final NotificationsModel notificationTypes1 = const NotificationsModel(
   notifications: [
-    NotificationModel(
-      id: 'defaut',
-      title: 'Notify Défaut',
-      subtitle: 'Notification Texte',
-      body: 'Non défini',
-    ),
     NotificationModel(
       id: 'vrai',
       title: 'Notify Vrai',
@@ -82,14 +82,42 @@ const NotificationsModel notificationTypes = NotificationsModel(
   ],
 );
 
+final NotificationsModel notificationTypes2 = const NotificationsModel(
+  notifications: [
+    NotificationModel(
+      id: 'defaut_1',
+      title: 'Notify Texte 1',
+      subtitle: 'Notification Texte 1',
+      body: 'Non défini',
+    ),
+    NotificationModel(
+      id: 'defaut_2',
+      title: 'Notify Texte 2',
+      subtitle: 'Notification Texte 2',
+      body: 'Non défini',
+    ),
+  ],
+);
+
+final NotificationsModel notificationTypes =
+    appVariantConst == 1 ? notificationTypes1 : notificationTypes2;
+
 List<NotificationModel> getDynamicNotifications(SettingsState settings) {
   return notificationTypes.notifications.map((n) {
-    if (n.id == 'defaut') {
+    if (n.id == 'defaut_1') {
       return NotificationModel(
         id: n.id,
         title: settings.defaultTitle,
         subtitle: settings.defaultSubtitle,
         body: settings.defaultBody,
+      );
+    }
+    if (n.id == 'defaut_2') {
+      return NotificationModel(
+        id: n.id,
+        title: settings.defaultTitle2,
+        subtitle: settings.defaultSubtitle2,
+        body: settings.defaultBody2,
       );
     }
     return n;
@@ -148,13 +176,19 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
   }
 
   void _setupQuickActions() {
-    _quickActions.setShortcutItems(<ShortcutItem>[
-      const ShortcutItem(type: 'vrai', localizedTitle: 'Notify Vrai'),
-      const ShortcutItem(type: 'faux', localizedTitle: 'Notify Faux'),
-      const ShortcutItem(type: 'active', localizedTitle: 'Notify Activé'),
-      const ShortcutItem(type: 'desactive', localizedTitle: 'Notify Désactivé'),
-      const ShortcutItem(type: 'defaut', localizedTitle: 'Notify Défaut'),
-    ]);
+    _quickActions.setShortcutItems(
+      appVariantConst == 1
+          ? const <ShortcutItem>[
+              ShortcutItem(type: 'vrai', localizedTitle: 'Notify Vrai'),
+              ShortcutItem(type: 'faux', localizedTitle: 'Notify Faux'),
+              ShortcutItem(type: 'active', localizedTitle: 'Notify Activé'),
+              ShortcutItem(type: 'desactive', localizedTitle: 'Notify Désactivé'),
+            ]
+          : const <ShortcutItem>[
+              ShortcutItem(type: 'defaut_1', localizedTitle: 'Notify Texte 1'),
+              ShortcutItem(type: 'defaut_2', localizedTitle: 'Notify Texte 2'),
+            ],
+    );
 
     // Guard: n'enregistrer le handler qu'une seule fois pour éviter
     // que plusieurs listeners s'accumulent si le widget est reconstruit
@@ -163,14 +197,17 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
     if (_quickActionsInitialized) return;
     _quickActionsInitialized = true;
 
-    _quickActions.initialize((String type) {
+    _quickActions.initialize((String type) async {
       try {
         final settings = ref.read(settingsProvider);
         final nType = getDynamicNotifications(
           settings,
         ).firstWhere((e) => e.id == type);
         ref.read(settingsProvider.notifier).setSelectedNotificationId(nType.id);
-        _sendNotification(typeOverride: nType);
+        await _sendNotification(typeOverride: nType);
+        
+        // Fermer l'application après avoir lancé la notification via raccourci
+        SystemNavigator.pop();
       } catch (e) {
         debugPrint("Error handling shortcut: $e");
       }
@@ -298,7 +335,7 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
                 ),
                 const SizedBox(height: 32),
                 Text(
-                  "Notifs Personnelles",
+                  appTitleConst,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
