@@ -72,8 +72,8 @@ class SettingsNotifier extends Notifier<SettingsState> {
       autoDismissEnabled: true,
       dismissDurationMinutes: 5,
       selectedNotificationId: _appVariant == 1 ? 'vrai' : 'defaut_1',
-      defaultTitle: 'Notify Texte',
-      defaultSubtitle: 'Notification Texte',
+      defaultTitle: 'Notify Texte 1',
+      defaultSubtitle: 'Notification Texte 1',
       defaultBody: 'Non défini',
       defaultTitle2: 'Notify Texte 2',
       defaultSubtitle2: 'Notification Texte 2',
@@ -85,10 +85,12 @@ class SettingsNotifier extends Notifier<SettingsState> {
     final prefs = await SharedPreferences.getInstance();
     final autoDismiss = prefs.getBool(_keyAutoDismiss) ?? true;
     final duration = prefs.getInt(_keyDismissDuration) ?? 5;
-    final selectedId = prefs.getString(_keySelectedNotification) ?? (_appVariant == 1 ? 'vrai' : 'defaut_1');
-    final title = prefs.getString(_keyDefaultTitle) ?? 'Notify Texte';
+    final selectedId =
+        prefs.getString(_keySelectedNotification) ??
+        (_appVariant == 1 ? 'vrai' : 'defaut_1');
+    final title = prefs.getString(_keyDefaultTitle) ?? 'Notify Texte 1';
     final subtitle =
-        prefs.getString(_keyDefaultSubtitle) ?? 'Notification Texte';
+        prefs.getString(_keyDefaultSubtitle) ?? 'Notification Texte 1';
     final body = prefs.getString(_keyDefaultBody) ?? 'Non défini';
     final title2 = prefs.getString(_keyDefaultTitle2) ?? 'Notify Texte 2';
     final subtitle2 =

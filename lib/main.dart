@@ -242,7 +242,7 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
           (e) => e.id == selectedId,
           orElse: () => dynNotifs[0],
         );
-    final id = DateTime.now().millisecond % 100000;
+    final id = type.id.hashCode;
     final timeout = settings.autoDismissEnabled
         ? settings.dismissDurationMinutes * 60000
         : null;

@@ -3,8 +3,8 @@
 echo "🚀 Building App: Notify personnelles 1..."
 flutter build apk --dart-define=APP_VARIANT=1 \
                   --dart-define=APP_TITLE="Notify personnelles 1" \
-                  -PAPP_LABEL="Notify personnelles 1" \
-                  -PAPP_ID="com.notifications.notify.perso1" \
+                  --dart-define=APP_LABEL="Notify personnelles 1" \
+                  --dart-define=APP_ID="com.notifications.notify.perso1" \
                   --release
 
 echo "✅ Build completed!"
