@@ -17,6 +17,10 @@ class _NotifyMeSettingsState extends ConsumerState<NotifyMeSettings> {
   late TextEditingController _bodyController;
   late TextEditingController _subtitle2Controller;
   late TextEditingController _body2Controller;
+  late TextEditingController _subtitle3Controller;
+  late TextEditingController _body3Controller;
+  late TextEditingController _subtitle4Controller;
+  late TextEditingController _body4Controller;
 
   @override
   void initState() {
@@ -29,6 +33,10 @@ class _NotifyMeSettingsState extends ConsumerState<NotifyMeSettings> {
     _bodyController = TextEditingController(text: settings.defaultBody);
     _subtitle2Controller = TextEditingController(text: settings.defaultSubtitle2);
     _body2Controller = TextEditingController(text: settings.defaultBody2);
+    _subtitle3Controller = TextEditingController(text: settings.defaultSubtitle3);
+    _body3Controller = TextEditingController(text: settings.defaultBody3);
+    _subtitle4Controller = TextEditingController(text: settings.defaultSubtitle4);
+    _body4Controller = TextEditingController(text: settings.defaultBody4);
   }
 
   @override
@@ -38,6 +46,10 @@ class _NotifyMeSettingsState extends ConsumerState<NotifyMeSettings> {
     _bodyController.dispose();
     _subtitle2Controller.dispose();
     _body2Controller.dispose();
+    _subtitle3Controller.dispose();
+    _body3Controller.dispose();
+    _subtitle4Controller.dispose();
+    _body4Controller.dispose();
     super.dispose();
   }
 
@@ -62,6 +74,18 @@ class _NotifyMeSettingsState extends ConsumerState<NotifyMeSettings> {
     }
     if (_body2Controller.text != settings.defaultBody2) {
       _body2Controller.text = settings.defaultBody2;
+    }
+    if (_subtitle3Controller.text != settings.defaultSubtitle3) {
+      _subtitle3Controller.text = settings.defaultSubtitle3;
+    }
+    if (_body3Controller.text != settings.defaultBody3) {
+      _body3Controller.text = settings.defaultBody3;
+    }
+    if (_subtitle4Controller.text != settings.defaultSubtitle4) {
+      _subtitle4Controller.text = settings.defaultSubtitle4;
+    }
+    if (_body4Controller.text != settings.defaultBody4) {
+      _body4Controller.text = settings.defaultBody4;
     }
 
     return Scaffold(
@@ -296,6 +320,74 @@ class _NotifyMeSettingsState extends ConsumerState<NotifyMeSettings> {
                           'Message',
                           _body2Controller,
                           settingsNotifier.setDefaultBody2,
+                          100,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Notification Texte 3',
+                    style: TextStyle(
+                      color: Color(0xFF8DAAFA),
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1C1C1E),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      children: [
+                        _buildTextFieldColumn(
+                          'Sous-titre',
+                          _subtitle3Controller,
+                          settingsNotifier.setDefaultSubtitle3,
+                          50,
+                        ),
+                        const Divider(color: Colors.white12, height: 24),
+                        _buildTextFieldColumn(
+                          'Message',
+                          _body3Controller,
+                          settingsNotifier.setDefaultBody3,
+                          100,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Notification Texte 4',
+                    style: TextStyle(
+                      color: Color(0xFF8DAAFA),
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1C1C1E),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      children: [
+                        _buildTextFieldColumn(
+                          'Sous-titre',
+                          _subtitle4Controller,
+                          settingsNotifier.setDefaultSubtitle4,
+                          50,
+                        ),
+                        const Divider(color: Colors.white12, height: 24),
+                        _buildTextFieldColumn(
+                          'Message',
+                          _body4Controller,
+                          settingsNotifier.setDefaultBody4,
                           100,
                         ),
                       ],

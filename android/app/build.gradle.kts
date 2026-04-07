@@ -1,3 +1,5 @@
+import java.util.Base64
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -17,7 +19,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = "17"
     }
 
     defaultConfig {
@@ -27,7 +29,7 @@ android {
             val dartDefinesProperty = project.property("dart-defines") as String
             val defines = dartDefinesProperty.split(",")
             for (define in defines) {
-                val decoded = String(java.util.Base64.getDecoder().decode(define))
+                val decoded = String(Base64.getDecoder().decode(define))
                 val pair = decoded.split("=", limit = 2)
                 if (pair.size == 2) {
                     dartEnvironmentVariables[pair[0]] = pair[1]

@@ -45,8 +45,10 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
               ),
             ]
           : const <ShortcutItem>[
-              ShortcutItem(type: 'defaut_1', localizedTitle: 'Notify Texte 1'),
-              ShortcutItem(type: 'defaut_2', localizedTitle: 'Notify Texte 2'),
+              ShortcutItem(type: 'defaut_1', localizedTitle: 'Texte:1'),
+              ShortcutItem(type: 'defaut_2', localizedTitle: 'Texte:2'),
+              ShortcutItem(type: 'defaut_3', localizedTitle: 'Texte:3'),
+              ShortcutItem(type: 'defaut_4', localizedTitle: 'Texte:4'),
             ],
     );
 

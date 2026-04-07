@@ -6,7 +6,7 @@ import 'package:notify_me/src/providers/settings_provider.dart';
 
 const String appTitleConst = String.fromEnvironment(
   'APP_TITLE',
-  defaultValue: 'Notify Personnelles',
+  defaultValue: 'Notify État',
 );
 
 const int appVariantConst = int.fromEnvironment(
@@ -49,14 +49,26 @@ final NotificationsModel notificationTypes2 = const NotificationsModel(
   notifications: [
     NotificationModel(
       id: 'defaut_1',
-      title: 'Notify Texte 1',
+      title: 'Texte:1',
       subtitle: 'Notification Texte 1',
       body: 'Non défini',
     ),
     NotificationModel(
       id: 'defaut_2',
-      title: 'Notify Texte 2',
+      title: 'Texte:2',
       subtitle: 'Notification Texte 2',
+      body: 'Non défini',
+    ),
+    NotificationModel(
+      id: 'defaut_3',
+      title: 'Texte:3',
+      subtitle: 'Notification Texte 3',
+      body: 'Non défini',
+    ),
+    NotificationModel(
+      id: 'defaut_4',
+      title: 'Texte:4',
+      subtitle: 'Notification Texte 4',
       body: 'Non défini',
     ),
   ],
@@ -83,6 +95,22 @@ List<NotificationModel> getDynamicNotifications(SettingsState settings) {
         title: settings.defaultTitle2,
         subtitle: settings.defaultSubtitle2,
         body: settings.defaultBody2,
+      );
+    }
+    if (n.id == 'defaut_3') {
+      return NotificationModel(
+        id: n.id,
+        title: settings.defaultTitle3,
+        subtitle: settings.defaultSubtitle3,
+        body: settings.defaultBody3,
+      );
+    }
+    if (n.id == 'defaut_4') {
+      return NotificationModel(
+        id: n.id,
+        title: settings.defaultTitle4,
+        subtitle: settings.defaultSubtitle4,
+        body: settings.defaultBody4,
       );
     }
     return n;
