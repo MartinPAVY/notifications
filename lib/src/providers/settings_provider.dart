@@ -120,7 +120,7 @@ class SettingsNotifier extends Notifier<SettingsState> {
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     final autoDismiss = prefs.getBool(_keyAutoDismiss) ?? true;
-    final duration = prefs.getInt(_keyDismissDuration) ?? 5;
+    final duration = prefs.getInt(_keyDismissDuration) ?? 1;
     final selectedId =
         prefs.getString(_keySelectedNotification) ??
         (_appVariant == 1 ? 'vrai' : 'defaut_1');
