@@ -44,11 +44,11 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
                 localizedTitle: 'Notify Désactivé',
               ),
             ]
-          : const <ShortcutItem>[
-              ShortcutItem(type: 'defaut_1', localizedTitle: 'Texte:1'),
-              ShortcutItem(type: 'defaut_2', localizedTitle: 'Texte:2'),
-              ShortcutItem(type: 'defaut_3', localizedTitle: 'Texte:3'),
-              ShortcutItem(type: 'defaut_4', localizedTitle: 'Texte:4'),
+          : <ShortcutItem>[
+              ShortcutItem(type: 'defaut_1', localizedTitle: notif1TitleOverride.isEmpty ? '$notifLabelPrefixConst:1' : notif1TitleOverride),
+              ShortcutItem(type: 'defaut_2', localizedTitle: notif2TitleOverride.isEmpty ? '$notifLabelPrefixConst:2' : notif2TitleOverride),
+              ShortcutItem(type: 'defaut_3', localizedTitle: notif3TitleOverride.isEmpty ? '$notifLabelPrefixConst:3' : notif3TitleOverride),
+              ShortcutItem(type: 'defaut_4', localizedTitle: notif4TitleOverride.isEmpty ? '$notifLabelPrefixConst:4' : notif4TitleOverride),
             ],
     );
 

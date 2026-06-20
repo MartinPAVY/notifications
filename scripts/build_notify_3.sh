@@ -5,6 +5,7 @@ flutter build apk --dart-define=APP_VARIANT=2 \
                   --dart-define=APP_TITLE="Notify Message" \
                   --dart-define=APP_LABEL="Notify Message" \
                   --dart-define=APP_ID="com.notifications.notify.perso3" \
+                  --dart-define=NOTIF_LABEL_PREFIX=Message \
                   --release
 
 echo "✅ Build completed!"

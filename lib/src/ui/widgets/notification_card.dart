@@ -44,7 +44,7 @@ class NotificationCard extends StatelessWidget {
                     type.title,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -52,7 +52,7 @@ class NotificationCard extends StatelessWidget {
                     type.subtitle,
                     style: const TextStyle(
                       color: Colors.white70,
-                      fontSize: 13,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -60,7 +60,7 @@ class NotificationCard extends StatelessWidget {
                     type.body,
                     style: const TextStyle(
                       color: Colors.white60,
-                      fontSize: 13,
+                      fontSize: 15,
                       fontWeight: FontWeight.normal,
                     ),
                   ),

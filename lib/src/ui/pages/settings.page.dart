@@ -3,6 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:notify_me/src/providers/settings_provider.dart';
 
 const int _appVariant = int.fromEnvironment('APP_VARIANT', defaultValue: 1);
+const String _notifLabelPrefix = String.fromEnvironment(
+  'NOTIF_LABEL_PREFIX',
+  defaultValue: 'Texte',
+);
 
 class NotifyMeSettings extends ConsumerStatefulWidget {
   const NotifyMeSettings({super.key});
@@ -256,10 +260,10 @@ class _NotifyMeSettingsState extends ConsumerState<NotifyMeSettings> {
                     ],
                   ),
                 ),
-                if (_appVariant == 2) ...[
+                if (_appVariant != 1) ...[
                   const SizedBox(height: 24),
                   const Text(
-                    'Notification Texte 1',
+                    'Notification $_notifLabelPrefix 1',
                     style: TextStyle(
                       color: Color(0xFF8DAAFA),
                       fontSize: 18,
@@ -279,21 +283,21 @@ class _NotifyMeSettingsState extends ConsumerState<NotifyMeSettings> {
                           'Sous-titre',
                           _subtitleController,
                           settingsNotifier.setDefaultSubtitle,
-                          50,
+                          64,
                         ),
                         const Divider(color: Colors.white12, height: 24),
                         _buildTextFieldColumn(
                           'Message',
                           _bodyController,
                           settingsNotifier.setDefaultBody,
-                          100,
+                          64,
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 24),
                   const Text(
-                    'Notification Texte 2',
+                    'Notification $_notifLabelPrefix 2',
                     style: TextStyle(
                       color: Color(0xFF8DAAFA),
                       fontSize: 18,
@@ -313,21 +317,21 @@ class _NotifyMeSettingsState extends ConsumerState<NotifyMeSettings> {
                           'Sous-titre',
                           _subtitle2Controller,
                           settingsNotifier.setDefaultSubtitle2,
-                          50,
+                          64,
                         ),
                         const Divider(color: Colors.white12, height: 24),
                         _buildTextFieldColumn(
                           'Message',
                           _body2Controller,
                           settingsNotifier.setDefaultBody2,
-                          100,
+                          64,
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 24),
                   const Text(
-                    'Notification Texte 3',
+                    'Notification $_notifLabelPrefix 3',
                     style: TextStyle(
                       color: Color(0xFF8DAAFA),
                       fontSize: 18,
@@ -347,21 +351,21 @@ class _NotifyMeSettingsState extends ConsumerState<NotifyMeSettings> {
                           'Sous-titre',
                           _subtitle3Controller,
                           settingsNotifier.setDefaultSubtitle3,
-                          50,
+                          64,
                         ),
                         const Divider(color: Colors.white12, height: 24),
                         _buildTextFieldColumn(
                           'Message',
                           _body3Controller,
                           settingsNotifier.setDefaultBody3,
-                          100,
+                          64,
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 24),
                   const Text(
-                    'Notification Texte 4',
+                    'Notification $_notifLabelPrefix 4',
                     style: TextStyle(
                       color: Color(0xFF8DAAFA),
                       fontSize: 18,
@@ -381,14 +385,14 @@ class _NotifyMeSettingsState extends ConsumerState<NotifyMeSettings> {
                           'Sous-titre',
                           _subtitle4Controller,
                           settingsNotifier.setDefaultSubtitle4,
-                          50,
+                          64,
                         ),
                         const Divider(color: Colors.white12, height: 24),
                         _buildTextFieldColumn(
                           'Message',
                           _body4Controller,
                           settingsNotifier.setDefaultBody4,
-                          100,
+                          64,
                         ),
                       ],
                     ),

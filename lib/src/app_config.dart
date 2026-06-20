@@ -14,6 +14,51 @@ const int appVariantConst = int.fromEnvironment(
   defaultValue: 1,
 );
 
+const String notifLabelPrefixConst = String.fromEnvironment(
+  'NOTIF_LABEL_PREFIX',
+  defaultValue: 'Texte',
+);
+
+const String notif1TitleOverride = String.fromEnvironment(
+  'NOTIF_1_TITLE',
+  defaultValue: '',
+);
+
+const String notif2TitleOverride = String.fromEnvironment(
+  'NOTIF_2_TITLE',
+  defaultValue: '',
+);
+
+const String notif3TitleOverride = String.fromEnvironment(
+  'NOTIF_3_TITLE',
+  defaultValue: '',
+);
+
+const String notif4TitleOverride = String.fromEnvironment(
+  'NOTIF_4_TITLE',
+  defaultValue: '',
+);
+
+const String notif1SubtitleOverride = String.fromEnvironment(
+  'NOTIF_1_SUBTITLE',
+  defaultValue: '',
+);
+
+const String notif2SubtitleOverride = String.fromEnvironment(
+  'NOTIF_2_SUBTITLE',
+  defaultValue: '',
+);
+
+const String notif3SubtitleOverride = String.fromEnvironment(
+  'NOTIF_3_SUBTITLE',
+  defaultValue: '',
+);
+
+const String notif4SubtitleOverride = String.fromEnvironment(
+  'NOTIF_4_SUBTITLE',
+  defaultValue: '',
+);
+
 // ─── Listes de notifications par variante ────────────────────────────────────
 
 final NotificationsModel notificationTypes1 = const NotificationsModel(
@@ -49,26 +94,26 @@ final NotificationsModel notificationTypes2 = const NotificationsModel(
   notifications: [
     NotificationModel(
       id: 'defaut_1',
-      title: 'Texte:1',
-      subtitle: 'Notification Texte 1',
+      title: '$notifLabelPrefixConst:1',
+      subtitle: 'Notification $notifLabelPrefixConst 1',
       body: 'Non défini',
     ),
     NotificationModel(
       id: 'defaut_2',
-      title: 'Texte:2',
-      subtitle: 'Notification Texte 2',
+      title: '$notifLabelPrefixConst:2',
+      subtitle: 'Notification $notifLabelPrefixConst 2',
       body: 'Non défini',
     ),
     NotificationModel(
       id: 'defaut_3',
-      title: 'Texte:3',
-      subtitle: 'Notification Texte 3',
+      title: '$notifLabelPrefixConst:3',
+      subtitle: 'Notification $notifLabelPrefixConst 3',
       body: 'Non défini',
     ),
     NotificationModel(
       id: 'defaut_4',
-      title: 'Texte:4',
-      subtitle: 'Notification Texte 4',
+      title: '$notifLabelPrefixConst:4',
+      subtitle: 'Notification $notifLabelPrefixConst 4',
       body: 'Non défini',
     ),
   ],

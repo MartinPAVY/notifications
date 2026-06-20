@@ -1,6 +1,51 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+const String _notifLabelPrefix = String.fromEnvironment(
+  'NOTIF_LABEL_PREFIX',
+  defaultValue: 'Texte',
+);
+
+const String _notif1TitleOverride = String.fromEnvironment(
+  'NOTIF_1_TITLE',
+  defaultValue: '',
+);
+
+const String _notif2TitleOverride = String.fromEnvironment(
+  'NOTIF_2_TITLE',
+  defaultValue: '',
+);
+
+const String _notif3TitleOverride = String.fromEnvironment(
+  'NOTIF_3_TITLE',
+  defaultValue: '',
+);
+
+const String _notif4TitleOverride = String.fromEnvironment(
+  'NOTIF_4_TITLE',
+  defaultValue: '',
+);
+
+const String _notif1SubtitleOverride = String.fromEnvironment(
+  'NOTIF_1_SUBTITLE',
+  defaultValue: '',
+);
+
+const String _notif2SubtitleOverride = String.fromEnvironment(
+  'NOTIF_2_SUBTITLE',
+  defaultValue: '',
+);
+
+const String _notif3SubtitleOverride = String.fromEnvironment(
+  'NOTIF_3_SUBTITLE',
+  defaultValue: '',
+);
+
+const String _notif4SubtitleOverride = String.fromEnvironment(
+  'NOTIF_4_SUBTITLE',
+  defaultValue: '',
+);
+
 class SettingsState {
   final bool autoDismissEnabled;
   final int dismissDurationMinutes;
@@ -102,17 +147,17 @@ class SettingsNotifier extends Notifier<SettingsState> {
       autoDismissEnabled: true,
       dismissDurationMinutes: 1,
       selectedNotificationId: _appVariant == 1 ? 'vrai' : 'defaut_1',
-      defaultTitle: 'Texte:1',
-      defaultSubtitle: 'Notification Texte 1',
+      defaultTitle: _notif1TitleOverride.isEmpty ? '$_notifLabelPrefix:1' : _notif1TitleOverride,
+      defaultSubtitle: _notif1SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 1' : _notif1SubtitleOverride,
       defaultBody: 'Non défini',
-      defaultTitle2: 'Texte:2',
-      defaultSubtitle2: 'Notification Texte 2',
+      defaultTitle2: _notif2TitleOverride.isEmpty ? '$_notifLabelPrefix:2' : _notif2TitleOverride,
+      defaultSubtitle2: _notif2SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 2' : _notif2SubtitleOverride,
       defaultBody2: 'Non défini',
-      defaultTitle3: 'Texte:3',
-      defaultSubtitle3: 'Notification Texte 3',
+      defaultTitle3: _notif3TitleOverride.isEmpty ? '$_notifLabelPrefix:3' : _notif3TitleOverride,
+      defaultSubtitle3: _notif3SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 3' : _notif3SubtitleOverride,
       defaultBody3: 'Non défini',
-      defaultTitle4: 'Texte:4',
-      defaultSubtitle4: 'Notification Texte 4',
+      defaultTitle4: _notif4TitleOverride.isEmpty ? '$_notifLabelPrefix:4' : _notif4TitleOverride,
+      defaultSubtitle4: _notif4SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 4' : _notif4SubtitleOverride,
       defaultBody4: 'Non défini',
     );
   }
@@ -124,21 +169,17 @@ class SettingsNotifier extends Notifier<SettingsState> {
     final selectedId =
         prefs.getString(_keySelectedNotification) ??
         (_appVariant == 1 ? 'vrai' : 'defaut_1');
-    final title = prefs.getString(_keyDefaultTitle) ?? 'Texte:1';
-    final subtitle =
-        prefs.getString(_keyDefaultSubtitle) ?? 'Notification Texte 1';
+    final title = prefs.getString(_keyDefaultTitle) ?? (_notif1TitleOverride.isEmpty ? '$_notifLabelPrefix:1' : _notif1TitleOverride);
+    final subtitle = prefs.getString(_keyDefaultSubtitle) ?? (_notif1SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 1' : _notif1SubtitleOverride);
     final body = prefs.getString(_keyDefaultBody) ?? 'Non défini';
-    final title2 = prefs.getString(_keyDefaultTitle2) ?? 'Texte:2';
-    final subtitle2 =
-        prefs.getString(_keyDefaultSubtitle2) ?? 'Notification Texte 2';
+    final title2 = prefs.getString(_keyDefaultTitle2) ?? (_notif2TitleOverride.isEmpty ? '$_notifLabelPrefix:2' : _notif2TitleOverride);
+    final subtitle2 = prefs.getString(_keyDefaultSubtitle2) ?? (_notif2SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 2' : _notif2SubtitleOverride);
     final body2 = prefs.getString(_keyDefaultBody2) ?? 'Non défini';
-    final title3 = prefs.getString(_keyDefaultTitle3) ?? 'Texte:3';
-    final subtitle3 =
-        prefs.getString(_keyDefaultSubtitle3) ?? 'Notification Texte 3';
+    final title3 = prefs.getString(_keyDefaultTitle3) ?? (_notif3TitleOverride.isEmpty ? '$_notifLabelPrefix:3' : _notif3TitleOverride);
+    final subtitle3 = prefs.getString(_keyDefaultSubtitle3) ?? (_notif3SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 3' : _notif3SubtitleOverride);
     final body3 = prefs.getString(_keyDefaultBody3) ?? 'Non défini';
-    final title4 = prefs.getString(_keyDefaultTitle4) ?? 'Texte:4';
-    final subtitle4 =
-        prefs.getString(_keyDefaultSubtitle4) ?? 'Notification Texte 4';
+    final title4 = prefs.getString(_keyDefaultTitle4) ?? (_notif4TitleOverride.isEmpty ? '$_notifLabelPrefix:4' : _notif4TitleOverride);
+    final subtitle4 = prefs.getString(_keyDefaultSubtitle4) ?? (_notif4SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 4' : _notif4SubtitleOverride);
     final body4 = prefs.getString(_keyDefaultBody4) ?? 'Non défini';
 
     state = SettingsState(
