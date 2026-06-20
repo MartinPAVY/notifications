@@ -1,0 +1,40 @@
+{
+  "nuit": {
+    "1": "orageux avec pluie modérée",
+    "2": "orageux avec forte pluie",
+    "3": "orageux avec forte chute de neige",
+    "4": "orageux avec faible pluie",
+    "5": "orageux avec faible chute de neige",
+    "6": "couvert avec pluie modérée",
+    "7": "couvert avec forte pluie",
+    "8": "couvert avec forte chute de neige",
+    "9": "couvert avec faible pluie",
+    "10": "couvert avec faible chute de neige",
+    "11": "ciel dégagé",
+    "12": "ciel couvert"
+  },
+  "jour": {
+    "1": "orageux avec forte chute de neige",
+    "2": "orageux avec faible chute de neige",
+    "3": "orageux avec éclaircies et forte chute de neige",
+    "4": "orageux avec éclaircies et faible chute de neige",
+    "5": "orage avec pluie modérée",
+    "6": "orage avec forte pluie",
+    "7": "orage avec faible pluie",
+    "8": "nuageux avec eclaircies",
+    "9": "nuageux",
+    "10": "ensoleillé",
+    "11": "couvert avec pluie modérée",
+    "12": "couvert avec forte pluie",
+    "13": "couvert avec forte chute de neige",
+    "14": "couvert avec faible pluie",
+    "15": "couvert avec faible chute de neige",
+    "16": "couvert avec éclaircies et pluie modérée",
+    "17": "couvert avec éclaircies et forte pluie",
+    "18": "couvert avec éclaircies et forte chute de neige",
+    "19": "couvert avec éclaircies et faible pluie",
+    "20": "couvert avec éclaircies et faible chute de neige",
+    "21": "couvert avec éclaircies",
+    "22": "couvert"
+  }
+}

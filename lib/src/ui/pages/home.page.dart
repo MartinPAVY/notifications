@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -34,22 +37,41 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
 
   void _setupQuickActions() {
     _quickActions.setShortcutItems(
-      appVariantConst == 1
-          ? const <ShortcutItem>[
-              ShortcutItem(type: 'vrai', localizedTitle: 'Notify Vrai'),
-              ShortcutItem(type: 'faux', localizedTitle: 'Notify Faux'),
-              ShortcutItem(type: 'active', localizedTitle: 'Notify Activé'),
-              ShortcutItem(
-                type: 'desactive',
-                localizedTitle: 'Notify Désactivé',
+      appVariantConst == 10
+          ? List.generate(
+              22,
+              (i) => ShortcutItem(
+                type: 'jour_${i + 1}',
+                localizedTitle: 'Météo-jour:${i + 1}',
               ),
-            ]
-          : <ShortcutItem>[
-              ShortcutItem(type: 'defaut_1', localizedTitle: notif1TitleOverride.isEmpty ? '$notifLabelPrefixConst:1' : notif1TitleOverride),
-              ShortcutItem(type: 'defaut_2', localizedTitle: notif2TitleOverride.isEmpty ? '$notifLabelPrefixConst:2' : notif2TitleOverride),
-              ShortcutItem(type: 'defaut_3', localizedTitle: notif3TitleOverride.isEmpty ? '$notifLabelPrefixConst:3' : notif3TitleOverride),
-              ShortcutItem(type: 'defaut_4', localizedTitle: notif4TitleOverride.isEmpty ? '$notifLabelPrefixConst:4' : notif4TitleOverride),
-            ],
+            )
+          : appVariantConst == 11
+              ? List.generate(
+                  12,
+                  (i) => ShortcutItem(
+                    type: 'nuit_${i + 1}',
+                    localizedTitle: 'Météo-nuit:${i + 1}',
+                  ),
+                )
+              : appVariantConst == 1
+                  ? const <ShortcutItem>[
+                      ShortcutItem(type: 'vrai', localizedTitle: 'Notify Vrai'),
+                      ShortcutItem(type: 'faux', localizedTitle: 'Notify Faux'),
+                      ShortcutItem(
+                        type: 'active',
+                        localizedTitle: 'Notify Activé',
+                      ),
+                      ShortcutItem(
+                        type: 'desactive',
+                        localizedTitle: 'Notify Désactivé',
+                      ),
+                    ]
+                  : const <ShortcutItem>[
+                      ShortcutItem(type: 'defaut_1', localizedTitle: 'Texte:1'),
+                      ShortcutItem(type: 'defaut_2', localizedTitle: 'Texte:2'),
+                      ShortcutItem(type: 'defaut_3', localizedTitle: 'Texte:3'),
+                      ShortcutItem(type: 'defaut_4', localizedTitle: 'Texte:4'),
+                    ],
     );
 
     if (_quickActionsInitialized) return;
@@ -105,15 +127,51 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
         ? settings.dismissDurationMinutes * 60000
         : null;
 
-    final AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-          'notifs_perso_channel',
-          'Notifs Perso',
-          channelDescription: 'Channel for Notifs Perso app triggers',
-          importance: Importance.max,
-          priority: Priority.high,
-          timeoutAfter: timeout,
+    final AndroidNotificationDetails androidNotificationDetails;
+
+    if (appVariantConst == 10 || appVariantConst == 11) {
+      final folder = appVariantConst == 10 ? 'day' : 'night';
+      final folderKey = appVariantConst == 10 ? 'jour' : 'nuit';
+      final conditionNumber = type.id.split('_').last;
+      StyleInformation? styleInfo;
+
+      try {
+        final jsonStr = await rootBundle.loadString(
+          'assets/weather/conditions.json',
         );
+        final conditions = jsonDecode(jsonStr) as Map<String, dynamic>;
+        final filename =
+            (conditions[folderKey] as Map<String, dynamic>?)?[conditionNumber]
+                as String?;
+
+        if (filename != null) {
+          final data = await rootBundle.load(
+            'assets/weather/$folder/$filename.jpg',
+          );
+          final bytes = data.buffer.asUint8List();
+          styleInfo = BigPictureStyleInformation(ByteArrayAndroidBitmap(bytes));
+        }
+      } catch (_) {}
+
+      androidNotificationDetails = AndroidNotificationDetails(
+        'meteo_channel',
+        'Météo',
+        channelDescription: 'Notifications météo',
+        importance: Importance.max,
+        priority: Priority.high,
+        styleInformation: styleInfo,
+        timeoutAfter: timeout,
+      );
+    } else {
+      androidNotificationDetails = AndroidNotificationDetails(
+        'notifs_perso_channel',
+        'Notifs Perso',
+        channelDescription: 'Channel for Notifs Perso app triggers',
+        importance: Importance.max,
+        priority: Priority.high,
+        timeoutAfter: timeout,
+      );
+    }
 
     const DarwinNotificationDetails darwinNotificationDetails =
         DarwinNotificationDetails(

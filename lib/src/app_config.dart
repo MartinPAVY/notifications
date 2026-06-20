@@ -119,8 +119,37 @@ final NotificationsModel notificationTypes2 = const NotificationsModel(
   ],
 );
 
-final NotificationsModel notificationTypes =
-    appVariantConst == 1 ? notificationTypes1 : notificationTypes2;
+final NotificationsModel notificationTypesMeteoJour = NotificationsModel(
+  notifications: List.generate(
+    22,
+    (i) => NotificationModel(
+      id: 'jour_${i + 1}',
+      title: 'Météo-jour:${i + 1}',
+      subtitle: 'Condition météo jour ${i + 1}',
+      body: 'Non défini',
+    ),
+  ),
+);
+
+final NotificationsModel notificationTypesMeteoNuit = NotificationsModel(
+  notifications: List.generate(
+    12,
+    (i) => NotificationModel(
+      id: 'nuit_${i + 1}',
+      title: 'Météo-nuit:${i + 1}',
+      subtitle: 'Condition météo nuit ${i + 1}',
+      body: 'Non défini',
+    ),
+  ),
+);
+
+final NotificationsModel notificationTypes = appVariantConst == 10
+    ? notificationTypesMeteoJour
+    : appVariantConst == 11
+        ? notificationTypesMeteoNuit
+        : appVariantConst == 1
+            ? notificationTypes1
+            : notificationTypes2;
 
 // ─── Résolution dynamique (titre personnalisé depuis les settings) ────────────
 
