@@ -122,6 +122,14 @@ class SettingsState {
 
 const int _appVariant = int.fromEnvironment('APP_VARIANT', defaultValue: 1);
 
+// Variante 1 : sous-titre 1 = paire Vrai/Faux, sous-titre 2 = paire Activé/Désactivé
+final String _defaultSubtitle1 = _appVariant == 1
+    ? 'Notification booléan'
+    : (_notif1SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 1' : _notif1SubtitleOverride);
+final String _defaultSubtitle2 = _appVariant == 1
+    ? 'Notification d\'état'
+    : (_notif2SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 2' : _notif2SubtitleOverride);
+
 class SettingsNotifier extends Notifier<SettingsState> {
   static const String _keyAutoDismiss = 'auto_dismiss_enabled';
   static const String _keyDismissDuration = 'dismiss_duration_minutes';
@@ -148,10 +156,10 @@ class SettingsNotifier extends Notifier<SettingsState> {
       dismissDurationMinutes: 1,
       selectedNotificationId: _appVariant == 1 ? 'vrai' : 'defaut_1',
       defaultTitle: _notif1TitleOverride.isEmpty ? '$_notifLabelPrefix:1' : _notif1TitleOverride,
-      defaultSubtitle: _notif1SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 1' : _notif1SubtitleOverride,
+      defaultSubtitle: _defaultSubtitle1,
       defaultBody: 'Non défini',
       defaultTitle2: _notif2TitleOverride.isEmpty ? '$_notifLabelPrefix:2' : _notif2TitleOverride,
-      defaultSubtitle2: _notif2SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 2' : _notif2SubtitleOverride,
+      defaultSubtitle2: _defaultSubtitle2,
       defaultBody2: 'Non défini',
       defaultTitle3: _notif3TitleOverride.isEmpty ? '$_notifLabelPrefix:3' : _notif3TitleOverride,
       defaultSubtitle3: _notif3SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 3' : _notif3SubtitleOverride,
@@ -170,10 +178,10 @@ class SettingsNotifier extends Notifier<SettingsState> {
         prefs.getString(_keySelectedNotification) ??
         (_appVariant == 1 ? 'vrai' : 'defaut_1');
     final title = prefs.getString(_keyDefaultTitle) ?? (_notif1TitleOverride.isEmpty ? '$_notifLabelPrefix:1' : _notif1TitleOverride);
-    final subtitle = prefs.getString(_keyDefaultSubtitle) ?? (_notif1SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 1' : _notif1SubtitleOverride);
+    final subtitle = prefs.getString(_keyDefaultSubtitle) ?? _defaultSubtitle1;
     final body = prefs.getString(_keyDefaultBody) ?? 'Non défini';
     final title2 = prefs.getString(_keyDefaultTitle2) ?? (_notif2TitleOverride.isEmpty ? '$_notifLabelPrefix:2' : _notif2TitleOverride);
-    final subtitle2 = prefs.getString(_keyDefaultSubtitle2) ?? (_notif2SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 2' : _notif2SubtitleOverride);
+    final subtitle2 = prefs.getString(_keyDefaultSubtitle2) ?? _defaultSubtitle2;
     final body2 = prefs.getString(_keyDefaultBody2) ?? 'Non défini';
     final title3 = prefs.getString(_keyDefaultTitle3) ?? (_notif3TitleOverride.isEmpty ? '$_notifLabelPrefix:3' : _notif3TitleOverride);
     final subtitle3 = prefs.getString(_keyDefaultSubtitle3) ?? (_notif3SubtitleOverride.isEmpty ? 'Notification $_notifLabelPrefix 3' : _notif3SubtitleOverride);

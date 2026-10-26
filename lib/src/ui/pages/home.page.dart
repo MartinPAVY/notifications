@@ -1,8 +1,9 @@
 import 'dart:convert';
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -149,9 +150,16 @@ class _NotifyMeHomeState extends ConsumerState<NotifyMeHome> {
             'assets/weather/$folder/$filename.jpg',
           );
           final bytes = data.buffer.asUint8List();
-          styleInfo = BigPictureStyleInformation(ByteArrayAndroidBitmap(bytes));
+          final tempDir = await getTemporaryDirectory();
+          final tempFile = File('${tempDir.path}/notif_weather.jpg');
+          await tempFile.writeAsBytes(bytes);
+          styleInfo = BigPictureStyleInformation(
+            FilePathAndroidBitmap(tempFile.path),
+          );
         }
-      } catch (_) {}
+      } catch (e, s) {
+        debugPrint('Weather image load error: $e\n$s');
+      }
 
       androidNotificationDetails = AndroidNotificationDetails(
         'meteo_channel',

@@ -155,6 +155,12 @@ final NotificationsModel notificationTypes = appVariantConst == 10
 
 List<NotificationModel> getDynamicNotifications(SettingsState settings) {
   return notificationTypes.notifications.map((n) {
+    if (n.id == 'vrai' || n.id == 'faux') {
+      return n.copyWith(subtitle: settings.defaultSubtitle);
+    }
+    if (n.id == 'active' || n.id == 'desactive') {
+      return n.copyWith(subtitle: settings.defaultSubtitle2);
+    }
     if (n.id == 'defaut_1') {
       return NotificationModel(
         id: n.id,

@@ -260,6 +260,42 @@ class _NotifyMeSettingsState extends ConsumerState<NotifyMeSettings> {
                     ],
                   ),
                 ),
+                if (_appVariant == 1) ...[
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Messages',
+                    style: TextStyle(
+                      color: Color(0xFF8DAAFA),
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1C1C1E),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      children: [
+                        _buildTextFieldColumn(
+                          'Vrai / Faux',
+                          _subtitleController,
+                          settingsNotifier.setDefaultSubtitle,
+                          64,
+                        ),
+                        const Divider(color: Colors.white12, height: 24),
+                        _buildTextFieldColumn(
+                          'Activé / Désactivé',
+                          _subtitle2Controller,
+                          settingsNotifier.setDefaultSubtitle2,
+                          64,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
                 if (_appVariant != 1) ...[
                   const SizedBox(height: 24),
                   const Text(
